@@ -19,7 +19,7 @@ This project has been created as a part of self-learning.
 In this project, I have created a Laravel REST API Service for a rental system App. 
 
 This rental system is consisting of three components: 
-[User](), [Inventory]() and [Rental](). They are representing three different tables in SQL. Accordingly, I have created 3 migration files under [/database/migration]() folder.
+[User](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/blob/master/example-app/app/Models/User.php), [Inventory](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/blob/master/example-app/app/Models/Inventory.php) and [Rental](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/blob/master/example-app/app/Models/Rental.php). They are representing three different tables in SQL. Accordingly, I have created 3 migration files under [/database/migration](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/tree/master/example-app/database/migrations) folder.
 
 User table has the information about the users of the system:
 - name
@@ -48,9 +48,9 @@ Rental table represents the renting information:
 - lending user
 - receiving user
 
-In addition, I have created 3 Models under [/App/Models]() folder, to be able to communicate with the database.
-Accordingly, 3 controller classes have been created under [/App/Http/Controllers](), which have the CRUD functions and logic controls.
-Finally, the routes for CRUD functions have been added in [web.php]() file.
+In addition, I have created 3 Models under [/App/Models](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/tree/master/example-app/app/Models) folder, to be able to communicate with the database.
+Accordingly, 3 controller classes have been created under [/App/Http/Controllers](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/tree/master/example-app/app/Http/Controllers), which have the CRUD functions and logic controls.
+Finally, the routes for CRUD functions have been added in [web.php](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/blob/master/example-app/routes/web.php) file.
 
 ## Build With
 
@@ -78,9 +78,9 @@ Moreover, I have added some logic controls. I have checked,
 - if "count" and "deposit" are positive numbers.
 - if "condition" is between 1 and 5.
 - if email has the right format.
-- if the item is lendable, before adding some records to [RentalController]().
-- if there is an item with the given inventory id, before adding records to [RentalController]().
-- if "count" is already "0" before adding records to [RentalController]().
+- if the item is lendable, before adding some records to [RentalController](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/blob/master/example-app/app/Http/Controllers/RentalController.php).
+- if there is an item with the given inventory id, before adding records to [RentalController](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/blob/master/example-app/app/Http/Controllers/RentalController.php).
+- if "count" is already "0" before adding records to [RentalController](https://github.com/cagilceren/PHP-Laravel-Rental-System-REST-API/blob/master/example-app/app/Http/Controllers/RentalController.php).
 
 During the logic controls I have checked the possible error resources and threw a related Exception, when it was needed. Successful requests return "HTTP 200 OK" while unsuccessful ones return "HTTP 400 Bad Request", "HTTP 412 Precondition Failed" or "HTTP 404 Not Found".
 
