@@ -29,7 +29,8 @@ class InventoryController extends Controller
             'count' => 'required|numeric|min:0',
             'condition' => 'required|numeric|min:1|max:5',
             'serialNo' => 'required|max:45',
-            'lendability' => 'required|numeric|min:0|max:1'
+            'lendability' => 'required|numeric|min:0|max:1',
+            'price' => 'required|numeric|min:0',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 412);
@@ -57,7 +58,8 @@ class InventoryController extends Controller
             'count' => 'required|numeric|min:0',
             'condition' => 'required|numeric|min:1|max:5',
             'serialNo' => 'required|max:45|unique:inventory,serialNo,' . $id,
-            'lendability' => 'required|numeric|min:0|max:1'
+            'lendability' => 'required|numeric|min:0|max:1',
+            'price' => 'required|numeric|min:0',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 412);

@@ -29,9 +29,17 @@ class Rental extends Model
         'dueDate',
         'returnDate',
         'comment',
-        'receivingUser'
+        'receivingUser',
+        'status',
     ];
     public $timestamps = false;
+
+    protected $with = ['inventory'];
+
+    public function inventory()
+    {
+        return $this->hasOne(Inventory::class, 'id', 'inventoryId');
+    }
 }
 
 

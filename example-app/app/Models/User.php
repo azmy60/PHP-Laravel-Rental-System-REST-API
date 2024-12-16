@@ -18,8 +18,10 @@ class User extends Model
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'phoneNumbers',
     ];
     /**
      * The attributes that should be hidden for arrays.
