@@ -15,17 +15,31 @@ class RentalController extends Controller
 {
     public function getAllRentalByInventoryId($id)
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
         $inventory = Inventory::findOrFail($id);
         return response(Rental::where('inventoryId', $inventory->id)->where('returnDate', null)->get()->toJson(JSON_PRETTY_PRINT));
     }
 
     public function getAll()
     {
-        return response(Rental::get()->toJson(JSON_PRETTY_PRINT));
+        if (auth()->user()->username == 'admin') {
+            return response(Rental::get()->toJson(JSON_PRETTY_PRINT));
+        }
+
+        return response(Rental::where('receivingUser', auth()->user()->id)->toJson(JSON_PRETTY_PRINT));
     }
 
     public function get($id)
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
         return response(Rental::findOrFail($id)->toJson(JSON_PRETTY_PRINT));
     }
 
@@ -100,6 +114,10 @@ class RentalController extends Controller
     {
         $rental = Rental::findOrFail($id);
 
+        if (auth()->user()->username != 'admin' && auth()->user()->id != $rental->receivingUser) {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
 
         // Update validation rules
         $validator = Validator::make($request->all(), [
@@ -144,6 +162,11 @@ class RentalController extends Controller
 
     public function delete($id)
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
         $rental = Rental::findOrFail($id);
         $inventory = Inventory::findOrFail($rental->inventoryId);
         if(!$rental->delete()) {

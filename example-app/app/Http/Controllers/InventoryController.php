@@ -23,6 +23,11 @@ class InventoryController extends Controller
 
     public function create(Request $request)
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
         $validator = Validator::make($request->all(), [
             'inventoryNo' => 'required|unique:inventory|max:45',
             'description' => 'required|max:45',
@@ -51,6 +56,11 @@ class InventoryController extends Controller
 
     public function update($id, Request $request)
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
         $inventory = Inventory::findOrFail($id);
         $validator = Validator::make($request->all(), [
             'inventoryNo' => 'required|max:45|unique:inventory,inventoryNo,' . $id,
@@ -79,6 +89,11 @@ class InventoryController extends Controller
 
     public function delete($id)
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
         if (Inventory::findOrFail($id)->delete()) {
                 throw new BadRequestHttpException("Couldn't delete the inventory!");
         }

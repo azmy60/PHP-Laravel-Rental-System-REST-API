@@ -10,12 +10,25 @@ class UserController extends Controller
 {
     public function getAll()
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
         return response(User::get()->toJson(JSON_PRETTY_PRINT));
     }
 
     public function get($id)
     {
-        return response(User::findOrFail($id)->toJson(JSON_PRETTY_PRINT));
+        if (auth()->user()->id != $id) {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+        return response(auth()->user()->toJson(JSON_PRETTY_PRINT));
+    }
+
+    public function getSelf()
+    {
+        return response(auth()->user()->toJson(JSON_PRETTY_PRINT));
     }
 
     public function create(Request $request)
@@ -42,7 +55,12 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-        $user = User::findOrFail($id);
+        if (auth()->user()->id != $id) {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
+        $user = auth()->user();
 
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|max:45',
@@ -78,6 +96,11 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        if (auth()->user()->username != 'admin') {
+            // not allowed
+            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
+        }
+
         if(User::findOrFail($id)->delete()) {
             throw new BadRequestHttpException("Couldn't delete the user!");
         }
