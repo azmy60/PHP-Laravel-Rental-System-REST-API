@@ -23,12 +23,15 @@ class UserController extends Controller
             // not allowed
             return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
         }
-        return response(auth()->user()->toJson(JSON_PRETTY_PRINT));
+        return response(User::where('id', $id)->first()->toJson(JSON_PRETTY_PRINT));
     }
 
     public function getSelf()
     {
-        return response(auth()->user()->toJson(JSON_PRETTY_PRINT));
+        $id = auth()->user()->id;
+        // echo json_encode(User::where('id', $id)->first());
+        // exit;
+        return response(User::where('id', $id)->first()->toJson(JSON_PRETTY_PRINT));
     }
 
     public function create(Request $request)
@@ -53,13 +56,9 @@ class UserController extends Controller
         }
     }
 
-    public function update($id, Request $request)
+    public function update(Request $request)
     {
-        if (auth()->user()->id != $id) {
-            // not allowed
-            return response()->json(['message' => 'You are not authorized to access this resource.'], 401);
-        }
-
+        $id = auth()->user()->id;
         $user = auth()->user();
 
         $validator = Validator::make($request->all(), [

@@ -30,7 +30,7 @@ class RentalController extends Controller
             return response(Rental::get()->toJson(JSON_PRETTY_PRINT));
         }
 
-        return response(Rental::where('receivingUser', auth()->user()->id)->toJson(JSON_PRETTY_PRINT));
+        return response(Rental::where('receivingUser', auth()->user()->id)->get()->toJson(JSON_PRETTY_PRINT));
     }
 
     public function get($id)
@@ -77,10 +77,7 @@ class RentalController extends Controller
                     }
                 },
             ],
-            'returnDate' => 'nullable|date_format:Y-m-d|after_or_equal:dueDate',
             'comment' => 'max:45',
-            'lendingUser' => 'required|exists:user,id', //TODO User authorization
-            'receivingUser' => 'nullable|exists:user,id' //TODO User authorization
         ]);
         if($validator->fails()){
             return response()->json($validator->errors(), 412);
@@ -98,10 +95,9 @@ class RentalController extends Controller
         $rental->phone = $request->phone;
         $rental->borrowDate = $request->borrowDate;
         $rental->dueDate = $request->dueDate;
-        $rental->returnDate = $request->returnDate;
         $rental->comment = $request->comment;
-        $rental->lendingUser = 1; //TODO User authorization
-        $rental->receivingUser = $request->receivingUser; //TODO User authorization
+        $rental->lendingUser = auth()->user()->id;
+        $rental->receivingUser = auth()->user()->id;
         $rental->status = 'processing';
         if($rental->save()) {
             return response($rental->toJson(JSON_PRETTY_PRINT));
@@ -132,10 +128,8 @@ class RentalController extends Controller
 
             'borrowDate' => 'nullable|date_format:Y-m-d|after_or_equal:now',
             'dueDate' => 'nullable|date_format:Y-m-d|after:borrowDate',
-            'returnDate' => 'nullable|date_format:Y-m-d|after_or_equal:dueDate',
+            'returnDate' => 'nullable|date_format:Y-m-d',
             'comment' => 'nullable|max:45',
-            'lendingUser' => 'nullable|exists:user,id', // TODO: User authorization
-            'receivingUser' => 'nullable|exists:user,id', // TODO: User authorization
 
             'status' => 'nullable|in:processing,shipping,delivered,returning,returned',
         ]);

@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', "\App\Http\Controllers\UserController@getAll");
     Route::get('user/{id}', "\App\Http\Controllers\UserController@get");
     Route::post('user', "\App\Http\Controllers\UserController@create");
-    Route::put('user/{id}', "\App\Http\Controllers\UserController@update");
+    Route::put('user', "\App\Http\Controllers\UserController@update");
     Route::delete('user/{id}', "\App\Http\Controllers\UserController@delete");
 
     Route::get('inventory', "\App\Http\Controllers\InventoryController@getAll");
